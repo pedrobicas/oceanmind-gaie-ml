@@ -20,29 +20,31 @@ Entrega da disciplina **Generative AI For Engineering (GAIE)** para a **Global S
 | Lucas Vassão | 98607 |
 | Pedro Bicas | 99534 |
 
-## Links de Entrega
+## Links
 
 | Item | Link |
 |---|---|
-| Repositório GitHub | https://github.com/pedrobicas/oceanmind-gaie-ml |
-| Aplicação publicada |  |
-| Execução local | http://localhost:8501 após rodar `streamlit run app.py` |
+| Repositório | https://github.com/pedrobicas/oceanmind-gaie-ml |
+| Aplicação | https://oceanmind-gaie-ml.streamlit.app |
+| Execução local | http://localhost:8501 |
 
-## Contexto do Problema
+## Sobre o Projeto
 
-O OceanMind é uma solução de inteligência oceânica que utiliza dados espaciais, climáticos e ambientais para apoiar o monitoramento de riscos marítimos e costeiros. O projeto se conecta à Indústria Espacial ao simular o uso de dados derivados de observação terrestre e sensoriamento remoto para apoiar decisões em regiões oceânicas.
+O OceanMind é uma proposta de inteligência oceânica para monitorar riscos marítimos e costeiros usando dados espaciais, climáticos e ambientais.
 
-O problema tratado nesta entrega é a **classificação do nível de risco oceânico/climático** de uma região monitorada. A previsão pode apoiar órgãos ambientais, cidades costeiras, pesquisadores e operações marítimas na identificação de anomalias térmicas, condições meteorológicas severas e risco ambiental elevado.
+Nesta entrega, o foco ficou na parte de Machine Learning: classificar o nível de risco oceânico/climático de uma região a partir de indicadores como temperatura do mar, anomalia térmica, vento, ondas, pressão atmosférica, nuvens e corrente marítima.
+
+A conexão com a Indústria Espacial está no uso simulado de dados de observação terrestre e sensoriamento remoto, que poderiam vir de satélites ou plataformas climáticas.
 
 ## Objetivo do Modelo
 
-Criar um pipeline completo de Machine Learning para prever a variável:
+O modelo prevê a variável:
 
 ```text
 ocean_risk_level
 ```
 
-Classes previstas:
+Classes possíveis:
 
 ```text
 baixo
@@ -51,29 +53,28 @@ alto
 critico
 ```
 
-## Fonte dos Dados
+## Dados
 
-Foi utilizado um **dataset sintético** gerado por regras programadas em Python, coerentes com o contexto oceânico/climático. A geração está em:
+Foi usado um dataset sintético gerado em Python:
 
 ```text
 src/generate_dataset.py
 ```
 
-O dataset final está em:
+Arquivo final:
 
 ```text
 data/oceanmind_dataset.csv
 ```
 
-Características da base:
+Resumo da base:
 
 | Item | Valor |
 |---|---:|
 | Registros | 1.600 |
 | Colunas | 15 |
-| Variáveis preditoras usadas no modelo | 13 |
+| Variáveis usadas no modelo | 13 |
 | Variável alvo | `ocean_risk_level` |
-| Classes | `baixo`, `moderado`, `alto`, `critico` |
 
 Distribuição das classes:
 
@@ -84,7 +85,7 @@ Distribuição das classes:
 | critico | 390 |
 | alto | 385 |
 
-Principais variáveis:
+Algumas variáveis usadas:
 
 - região monitorada;
 - latitude e longitude;
@@ -99,38 +100,38 @@ Principais variáveis:
 - índice de clorofila;
 - velocidade da corrente.
 
-## Metodologia
+## Pipeline
 
-O pipeline utiliza um fluxo supervisionado de classificação:
+O pipeline foi feito com `scikit-learn` e contempla:
 
-1. Carregamento do dataset CSV.
-2. Remoção de colunas não preditivas (`sample_id`) e separação da variável alvo.
-3. Divisão treino/teste com 20% para teste e estratificação por classe.
-4. Pré-processamento com `ColumnTransformer`.
-5. Normalização das variáveis numéricas com `StandardScaler`.
-6. Codificação da variável categórica `region` com `OneHotEncoder`.
-7. Treinamento de dois modelos.
-8. Avaliação com acurácia, precision, recall, f1-score e matriz de confusão.
-9. Seleção automática do melhor modelo por acurácia.
-10. Geração de interpretabilidade com SHAP.
-11. Demonstração funcional em Streamlit.
+1. carregamento do CSV;
+2. separação entre atributos e alvo;
+3. remoção da coluna `sample_id`;
+4. divisão treino/teste com estratificação;
+5. normalização das variáveis numéricas;
+6. One-Hot Encoding da variável `region`;
+7. treino de dois modelos;
+8. comparação por métricas;
+9. escolha do melhor modelo;
+10. análise SHAP;
+11. app Streamlit para demonstração.
 
-## Modelos Testados
+## Modelos
 
-Foram aplicadas duas técnicas diferentes de classificação:
+Foram testados:
 
-| Modelo | Arquivo gerado |
+| Modelo | Arquivo |
 |---|---|
 | Random Forest Classifier | `models/random_forest.joblib` |
 | Gradient Boosting Classifier | `models/gradient_boosting.joblib` |
 
-O melhor modelo é salvo em:
+O melhor modelo fica salvo em:
 
 ```text
 models/best_model.joblib
 ```
 
-## Resultados Obtidos
+## Resultados
 
 Treinamento validado localmente em 29/05/2026.
 
@@ -139,28 +140,23 @@ Treinamento validado localmente em 29/05/2026.
 | Random Forest | 80,625% |
 | Gradient Boosting | 80,3125% |
 
-Melhor modelo selecionado:
+Melhor modelo:
 
 ```text
 random_forest
 ```
 
-Arquivos gerados:
+Arquivos de saída:
 
 ```text
-models/random_forest.joblib
-models/gradient_boosting.joblib
-models/best_model.joblib
 reports/metrics.json
 reports/figures/confusion_matrix_random_forest.png
 reports/figures/confusion_matrix_gradient_boosting.png
-reports/figures/shap_feature_importance.png
-reports/shap_ranking.json
 ```
 
-## Interpretação com SHAP
+## SHAP
 
-A análise SHAP foi executada sobre o melhor modelo treinado e agregada por importância média absoluta. As variáveis mais influentes foram:
+A análise SHAP foi usada para entender quais variáveis mais pesaram nas previsões.
 
 | Posição | Variável | Importância SHAP |
 |---:|---|---:|
@@ -170,49 +166,43 @@ A análise SHAP foi executada sobre o melhor modelo treinado e agregada por impo
 | 4 | `wind_speed_kmh` | 0.0221 |
 | 5 | `pressure_hpa` | 0.0209 |
 
-Interpretação técnica: o modelo considera a **anomalia térmica** como o fator mais relevante para classificar o risco oceânico. Isso é coerente com o problema, pois desvios anormais de temperatura da superfície do mar tendem a indicar aquecimento local, instabilidade climática e alterações ambientais. Temperatura da superfície, altura das ondas, vento e pressão atmosférica também aparecem entre os fatores mais importantes, reforçando a consistência das regras usadas na geração do dataset.
+A anomalia térmica foi a variável mais forte, o que faz sentido para o problema, já que mudanças anormais na temperatura do mar são um sinal importante de risco ambiental e climático.
 
-## Aplicação Streamlit
+Arquivos:
 
-A aplicação `app.py` permite informar dados ambientais de uma região e receber:
+```text
+reports/figures/shap_feature_importance.png
+reports/shap_ranking.json
+```
 
-- classe prevista de risco oceânico;
-- confiança aproximada do modelo;
-- métricas de treinamento;
-- ranking de variáveis SHAP.
+## Aplicação
 
-Para publicar, use Streamlit Community Cloud, Azure App Service, Render ou Hugging Face Spaces. Depois da publicação, substitua o campo **Aplicação publicada** na seção de links.
+A aplicação foi feita em Streamlit e permite simular uma região, ajustar os indicadores ambientais e ver o risco previsto.
 
-## Como Executar
+Link:
 
-Crie e ative um ambiente virtual:
+```text
+https://oceanmind-gaie-ml.streamlit.app
+```
+
+## Como Executar Localmente
+
+Crie o ambiente virtual:
 
 ```bash
 python -m venv .venv
 ```
 
-Windows:
+Ative no Windows:
 
 ```bash
 .venv\Scripts\activate
-```
-
-Linux/Mac:
-
-```bash
-source .venv/bin/activate
 ```
 
 Instale as dependências:
 
 ```bash
 pip install -r requirements.txt
-```
-
-Gere novamente o dataset, se necessário:
-
-```bash
-python src/generate_dataset.py
 ```
 
 Treine os modelos:
@@ -227,73 +217,47 @@ Gere a análise SHAP:
 python src/shap_analysis.py
 ```
 
-Execute a aplicação:
+Rode o app:
 
 ```bash
 streamlit run app.py
 ```
 
-Abra no navegador:
+Abra:
 
 ```text
 http://localhost:8501
 ```
 
-## Relatório Técnico
+## Relatório
 
-O relatório final da disciplina está em:
+O relatório técnico está disponível em Markdown e PDF:
 
 ```text
 reports/relatorio_gaie.md
+reports/relatorio_gaie.pdf
 ```
 
-## Estrutura do Projeto
+## Estrutura
 
 ```text
-.
-├── app.py
-├── requirements.txt
-├── README.md
-├── .streamlit/
-│   └── config.toml
-├── data/
-│   └── oceanmind_dataset.csv
-├── models/
-│   ├── best_model.joblib
-│   ├── gradient_boosting.joblib
-│   └── random_forest.joblib
-├── notebooks/
-│   └── oceanmind_ml_pipeline.ipynb
-├── reports/
-│   ├── metrics.json
-│   ├── relatorio_gaie.md
-│   ├── shap_ranking.json
-│   └── figures/
-│       ├── confusion_matrix_gradient_boosting.png
-│       ├── confusion_matrix_random_forest.png
-│       └── shap_feature_importance.png
-└── src/
-    ├── generate_dataset.py
-    ├── predict.py
-    ├── shap_analysis.py
-    └── train_models.py
+app.py
+requirements.txt
+README.md
+.streamlit/config.toml
+data/oceanmind_dataset.csv
+models/best_model.joblib
+models/gradient_boosting.joblib
+models/random_forest.joblib
+notebooks/oceanmind_ml_pipeline.ipynb
+reports/metrics.json
+reports/relatorio_gaie.md
+reports/shap_ranking.json
+reports/figures/confusion_matrix_gradient_boosting.png
+reports/figures/confusion_matrix_random_forest.png
+reports/figures/shap_feature_importance.png
+src/generate_dataset.py
+src/predict.py
+src/shap_analysis.py
+src/train_models.py
 ```
-
-## Checklist dos Requisitos GAIE
-
-| Requisito do enunciado | Status |
-|---|---|
-| Problema real relacionado à Economia/Indústria Espacial | Atendido |
-| Dados via API ou sintéticos com no mínimo 1.000 linhas e 10 colunas | Atendido: 1.600 linhas e 15 colunas |
-| Pelo menos duas técnicas preditivas | Atendido: Random Forest e Gradient Boosting |
-| Pipeline com pré-processamento | Atendido |
-| Engenharia/seleção de atributos | Atendido por seleção de variáveis e transformação numérica/categórica |
-| Treinamento dos modelos | Atendido |
-| Validação e comparação de desempenho | Atendido |
-| Escolha do melhor modelo | Atendido |
-| Deploy com Streamlit ou similar | Atendido localmente; falta apenas inserir a URL pública |
-| Interpretabilidade com SHAP | Atendido |
-| README detalhado | Atendido |
-| Link do GitHub | Atendido |
-| Link da aplicação em funcionamento | Pendente até publicação do deploy |
-
