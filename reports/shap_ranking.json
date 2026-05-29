@@ -1,0 +1,42 @@
+[
+  {
+    "feature": "num__temperature_anomaly_c",
+    "importance": 0.1471466394426113
+  },
+  {
+    "feature": "num__sea_surface_temperature_c",
+    "importance": 0.060155159134828294
+  },
+  {
+    "feature": "num__wave_height_m",
+    "importance": 0.028906059798957315
+  },
+  {
+    "feature": "num__wind_speed_kmh",
+    "importance": 0.0220788486252335
+  },
+  {
+    "feature": "num__pressure_hpa",
+    "importance": 0.020933128476929266
+  },
+  {
+    "feature": "num__latitude",
+    "importance": 0.017433879866595742
+  },
+  {
+    "feature": "num__cloud_coverage_percent",
+    "importance": 0.013561555287010075
+  },
+  {
+    "feature": "num__chlorophyll_index",
+    "importance": 0.010735038525090244
+  },
+  {
+    "feature": "num__current_speed_ms",
+    "importance": 0.006604778645150626
+  },
+  {
+    "feature": "num__month",
+    "importance": 0.006351565740036967
+  }
+]
